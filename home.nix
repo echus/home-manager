@@ -161,34 +161,71 @@ in
       # No delay time for escape key press
       escapeTime = 0;
 
-      plugins = with pkgs.tmuxPlugins; [
-        sensible  # Sensible defaults
-        vim-tmux-navigator  # Navigate vim/tmux panes
-        better-mouse-mode
-        copycat  # Regex search
-        {
-          plugin = resurrect;  # Restore sessions
-          extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-        }
-        {
-          plugin = continuum;  # Auto-restore sessions
-          extraConfig = "set -g @continuum-restore 'on'";
-        }
-        {
-          plugin = minimal-tmux-status.packages.${pkgs.system}.default;
-          extraConfig = ''
-            set -g @minimal-tmux-justify "centre"
-            set -g @minimal-tmux-status "top"
-          '';
-        }
-      ];
+      # Don't put sensible at top of config
+      sensibleOnTop = false;
+
+      # NOTE: Commented out as continuum doesn't work with nixpkgs tmux plugin
+      # management. Maybe this will be fixed in the future?
+
+      # plugins = with pkgs.tmuxPlugins; [
+      #   sensible  # Sensible defaults
+      #   vim-tmux-navigator  # Navigate vim/tmux panes
+      #   better-mouse-mode
+      #   copycat  # Regex search
+      #   {
+      #     plugin = resurrect;  # Restore sessions
+      #     extraConfig = ''
+      #       # Enable nvim session restore w/ vim-obsession
+      #       set -g @resurrect-strategy-nvim 'session'
+      #     '';
+      #   }
+      #   {
+      #     plugin = continuum;  # Auto-restore sessions
+      #     extraConfig = "set -g @continuum-restore 'on'";
+      #   }
+      #   {
+      #     plugin = minimal-tmux-status.packages.${pkgs.system}.default;
+      #     extraConfig = ''
+      #       set -g @minimal-tmux-justify "centre"
+      #       set -g @minimal-tmux-status "top"
+      #     '';
+      #   }
+      # ];
+
+      # NOTE: On new install, you will need to manually install tpm:
+      # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+      # Then prefix + I in tmux to install plugins
 
       extraConfig = ''
+        #
+        # Plugins
+        #
+
+        # Use Tmux Plugin Manager
+        set -g @plugin 'tmux-plugins/tpm'  # Use tmux plugin manager
+        set -g @plugin 'tmux-plugins/tmux-sensible'
+        set -g @plugin 'tmux-plugins/tmux-resurrect'
+        set -g @resurrect-strategy-nvim 'session'  # Enable nvim session restore w/ vim-obsession
+        set -g @plugin 'tmux-plugins/tmux-continuum'
+        set -g @continuum-restore 'on'  # Enable auto session restore
+        set -g @plugin 'niksingh710/minimal-tmux-status'
+        set -g @minimal-tmux-justify "centre"
+        set -g @minimal-tmux-status "top"
+        set -g @plugin 'tmux-plugins/tmux-copycat'  # Regex search
+
+        #
+        # Appearance
+        #
+
         # Fix colours
         set -ga terminal-overrides ",*256col*:Tc"
 
         # Move status bar to top
         set-option -g status-position top
+
+        #
+        # Behaviour
+        #
 
         # Renumber windows on window close
         set -g renumber-windows on
@@ -199,6 +236,33 @@ in
 
         # Monitor window activity
         set -g monitor-activity on
+
+        # Disable copy on mouse release
+        unbind -T copy-mode-vi MouseDragEnd1Pane
+
+        # Open new sessions at current path
+        bind c new-window -c "#{pane_current_path}"
+        bind '"' split-window -c "#{pane_current_path}"
+        bind % split-window -h -c "#{pane_current_path}"
+
+        #
+        # Key bindings
+        #
+
+        # Shift arrow to switch windows
+        bind -n S-Left  previous-window
+        bind -n S-Right next-window
+
+        # Swap windows
+        bind-key S-Left swap-window -t -1
+        bind-key S-Right swap-window -t +1
+
+        # Shortcut to reload tmux config
+        bind r source-file ~/.config/tmux/tmux.conf
+
+        # Vim style copying
+        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xsel -i -p && xsel -o -p | xsel -i -b"
+        bind-key p run "xsel -o | tmux load-buffer - ; tmux paste-buffer"
 
         # Window splitting
         bind-key v split-window -h
@@ -233,28 +297,11 @@ in
         bind -n M-Up select-pane -U
         bind -n M-Down select-pane -D
 
-        # Shift arrow to switch windows
-        bind -n S-Left  previous-window
-        bind -n S-Right next-window
+        #
+        # Initialise TPM (keep this at the bottom)
+        #
 
-        # Shortcut to reload tmux config
-        bind r source-file ~/.config/tmux/tmux.conf
-
-        # Open new sessions at current path
-        bind c new-window -c "#{pane_current_path}"
-        bind '"' split-window -c "#{pane_current_path}"
-        bind % split-window -h -c "#{pane_current_path}"
-
-        # Disable copy on mouse release
-        unbind -T copy-mode-vi MouseDragEnd1Pane
-
-        # Vim style copying
-        bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xsel -i -p && xsel -o -p | xsel -i -b"
-        bind-key p run "xsel -o | tmux load-buffer - ; tmux paste-buffer"
-
-        # Swap windows
-        bind-key S-Left swap-window -t -1
-        bind-key S-Right swap-window -t +1
+        run -b '~/.tmux/plugins/tpm/tpm'
       '';
     };
   };
