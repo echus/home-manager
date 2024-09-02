@@ -21,6 +21,7 @@ in
     nix-direnv
     nodejs_22
     yarn
+    any-nix-shell  # zsh support for nix-shell
   ];
 
   home.sessionVariables = {
@@ -46,10 +47,10 @@ in
 
       initExtra = ''
         # Initialise any-nix-shell
-        # any-nix-shell zsh --info-right | source /dev/stdin
+        any-nix-shell zsh --info-right | source /dev/stdin
 
         # Add yarn globals to PATH
-        # export PATH="$PATH:`yarn global bin`"
+        export PATH="$PATH:`yarn global bin`"
       '';
 
       history = {
