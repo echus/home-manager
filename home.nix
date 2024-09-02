@@ -44,10 +44,6 @@ in
         enable = true;
       };
 
-      shellAliases = {
-        # vim = "nvim";
-      };
-
       initExtra = ''
         # Initialise any-nix-shell
         # any-nix-shell zsh --info-right | source /dev/stdin
