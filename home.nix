@@ -12,16 +12,26 @@ in
 
   # Home Manager backwards-compatibility version
   # DON'T CHANGE unless config is compatible with latest version
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
+    # Shell
     oh-my-zsh
+    any-nix-shell  # zsh support for nix-shell
+
+    # CLI
+    git
+    tig
     gdk  # Google Cloud SDK
+
+    # Direnv
     direnv
     nix-direnv
+
+    # Programming
     nodejs_22
     yarn
-    any-nix-shell  # zsh support for nix-shell
+    python3
   ];
 
   home.sessionVariables = {
