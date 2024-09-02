@@ -23,6 +23,7 @@ in
     git
     tig
     gdk  # Google Cloud SDK
+    silver-searcher
 
     # Direnv
     direnv
