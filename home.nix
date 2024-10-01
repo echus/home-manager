@@ -31,7 +31,7 @@ in
 
     # Programming
     nodejs_22
-    yarn
+    yarn-berry
     python3
   ];
 
