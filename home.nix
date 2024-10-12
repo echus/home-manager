@@ -62,6 +62,10 @@ in
 
         # Add yarn globals to PATH
         export PATH="$PATH:`yarn global bin`"
+
+        # Increase file descriptor soft limit
+        # See: https://github.com/microsoft/WSL/discussions/6400
+        ulimit -Sn 100000
       '';
 
       history = {
