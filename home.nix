@@ -65,7 +65,7 @@ in
 
         # Increase file descriptor soft limit
         # See: https://github.com/microsoft/WSL/discussions/6400
-        ulimit -Sn 100000
+        ulimit -Sn 104857
       '';
 
       history = {
