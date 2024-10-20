@@ -21,6 +21,7 @@ in
 
     # CLI
     git
+    gh
     tig
     gdk  # Google Cloud SDK
     silver-searcher
