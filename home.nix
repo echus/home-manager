@@ -23,8 +23,10 @@ in
     git
     gh
     tig
-    gdk  # Google Cloud SDK
     silver-searcher
+    gdk
+    awscli2
+    coldsnap  # AWS EBS volume CLI
 
     # Direnv
     direnv
@@ -43,6 +45,27 @@ in
   programs = {
     # Let Home Manager install and manage itself
     home-manager.enable = true;
+
+    ssh = {
+      enable = true;
+
+      serverAliveInterval = 60;
+
+      # Required to use ancient keys for logging into Bindfit etc
+      extraConfig = ''
+      Host *
+        PubkeyAcceptedKeyTypes=+ssh-rsa
+        HostKeyAlgorithms=+ssh-rsa
+      '';
+
+      matchBlocks = {
+        "bindfit" = {
+          hostname = "52.63.104.201";
+          user = "webadmin";
+          identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
+        };
+      };
+    };
 
     # zsh
     zsh = {
@@ -63,10 +86,6 @@ in
 
         # Add yarn globals to PATH
         export PATH="$PATH:`yarn global bin`"
-
-        # Increase file descriptor soft limit
-        # See: https://github.com/microsoft/WSL/discussions/6400
-        ulimit -Sn 104857
       '';
 
       history = {
