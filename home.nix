@@ -36,6 +36,9 @@ in
     nodejs_22
     yarn-berry
     python3
+
+    # VSCode
+    vscodium
   ];
 
   home.sessionVariables = {
@@ -104,7 +107,7 @@ in
           "terraform"
         ];
 
-        theme = "candy";
+        theme = "af-magic";
       };
     };
 
@@ -309,6 +312,41 @@ in
 
         run -b '~/.tmux/plugins/tpm/tpm'
       '';
+    };
+
+    vscode = {
+      enable = true;
+
+      package = pkgs.vscodium;
+
+      userSettings = {
+        "workbench.colorTheme" = "Monokai";
+        "files.autoSave" = "afterDelay";
+
+        # Set default terminal to home-manager zsh
+        "terminal.integrated.profiles.linux" =  {
+          "zsh" = {
+            "path" = "/home/varvara/.nix-profile/bin/zsh";
+          };
+        };
+
+        "terminal.integrated.defaultProfile.linux" = "zsh";
+
+        # Configure vscode-neovim executable and affinity
+        "vscode-neovim.neovimExecutablePaths.linux" = "/home/varvara/.nix-profile/bin/nvim";
+
+        "extensions.experimental.affinity" = {
+          "asvetliakov.vscode-neovim" = 1;
+        };
+      };
+
+      extensions = with pkgs.vscode-extensions; [
+        asvetliakov.vscode-neovim
+        yoavbls.pretty-ts-errors
+        bbenoist.nix
+        ms-python.python
+        ms-azuretools.vscode-docker
+      ];
     };
   };
 }
