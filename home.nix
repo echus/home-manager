@@ -325,6 +325,9 @@ in
         "workbench.colorTheme" = "Monokai";
         "files.autoSave" = "afterDelay";
 
+        # Fix capslock/esc swap behaviour
+        "keyboard.dispatch" = "keyCode";
+
         # Set default terminal to home-manager zsh
         "terminal.integrated.profiles.linux" =  {
           "zsh" = {
@@ -348,6 +351,7 @@ in
         bbenoist.nix
         ms-python.python
         ms-azuretools.vscode-docker
+        astro-build.astro-vscode
       ];
     };
   };
