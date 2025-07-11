@@ -27,6 +27,8 @@ in
     gdk
     awscli2
     coldsnap  # AWS EBS volume CLI
+    android-tools
+    sigtop  # Utility to backup Signal Desktop messages
 
     # Direnv
     direnv
