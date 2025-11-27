@@ -29,9 +29,6 @@
     nodejs_22
     yarn-berry
     python3
-
-    # VSCode
-    vscodium
   ];
 
   home.sessionVariables = {
