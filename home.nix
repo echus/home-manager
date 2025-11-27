@@ -1,14 +1,6 @@
-{ config, pkgs, minimal-tmux-status, tmux-continuum, ... }:
-
-let
-  # See: https://nixos.wiki/wiki/Google_Cloud_SDK
-  gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
-    gke-gcloud-auth-plugin
-  ]);
-in
-{
+{ config, pkgs, minimal-tmux-status, tmux-continuum, ... }: {
   home.username = "varvara";
-  home.homeDirectory = "/home/varvara";
+  home.homeDirectory = "/Users/varvara";
 
   # Home Manager backwards-compatibility version
   # DON'T CHANGE unless config is compatible with latest version
@@ -24,7 +16,6 @@ in
     gh
     tig
     silver-searcher
-    gdk
     awscli2
     coldsnap  # AWS EBS volume CLI
     android-tools
