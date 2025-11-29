@@ -1,5 +1,5 @@
 {
-  description = "V's home manager config";
+  description = "V's home manager config!";
 
   inputs = {
     # NixPkgs source branch
