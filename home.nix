@@ -196,6 +196,9 @@
       # Then prefix + I in tmux to install plugins
 
       extraConfig = ''
+        # Fix "unhandled Platform key FamilyDisplayName tmux"
+        set -as terminal-overrides ',*:ignore-osc'
+
         #
         # Plugins
         #
