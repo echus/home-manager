@@ -64,6 +64,12 @@
     zsh = {
       enable = true;
 
+      shellAliases = {
+        vi = "nvim";
+        vim = "nvim";
+        switch = "home-manager switch";
+      };
+
       autocd = true;
       dotDir = ".config/zsh";
 
