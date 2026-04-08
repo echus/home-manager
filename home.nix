@@ -57,6 +57,12 @@
           user = "webadmin";
           identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
         };
+
+        "mezzanine" = {
+          hostname = "52.63.16.150";
+          user = "webadmin";
+          identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
+        };
       };
     };
 
@@ -68,6 +74,7 @@
         vi = "nvim";
         vim = "nvim";
         switch = "home-manager switch";
+        ls = "ls --color=auto";
       };
 
       autocd = true;
@@ -85,6 +92,14 @@
 
         # Add yarn globals to PATH
         export PATH="$PATH:`yarn global bin`"
+
+        # nvm
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+        [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+        # Allow insecure Nix packages
+        export NIXPKGS_ALLOW_INSECURE=1
       '';
 
       history = {
@@ -227,6 +242,7 @@
 
         # Fix colours
         set -ga terminal-overrides ",*256col*:Tc"
+        set -g default-terminal "screen-256color"
 
         # Move status bar to top
         set-option -g status-position top
