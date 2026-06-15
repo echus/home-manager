@@ -26,9 +26,10 @@
     nix-direnv
 
     # Programming
-    nodejs_22
+    nodejs_24
     yarn-berry
     python3
+    uv
   ];
 
   home.sessionVariables = {
@@ -61,6 +62,12 @@
         "mezzanine" = {
           hostname = "52.63.16.150";
           user = "webadmin";
+          identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
+        };
+
+        "rnaforge" = {
+          hostname = "3.106.227.85";
+          user = "ubuntu";
           identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
         };
       };
@@ -131,7 +138,7 @@
 
       plugins = with pkgs.vimPlugins; [
         neovim-sensible
-        catppuccin-nvim
+        bluloco-nvim
         vim-nix
         vim-json
         vim-astro
@@ -150,9 +157,9 @@
         " Use system clipboard for yank/paste
         set clipboard=unnamedplus
 
-        colorscheme catppuccin-macchiato
+        colorscheme bluloco-light
 
-        set background=dark
+        set background=light
         set termguicolors
       '';
     };
