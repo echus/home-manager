@@ -104,7 +104,13 @@
 
       initContent = ''
         # Initialise any-nix-shell
+        # Theme (e.g. refined) and any-nix-shell both define precmd(); run both as hooks
+        autoload -Uz add-zsh-hook
+        (( $+functions[precmd] )) && functions -c precmd theme_precmd
         any-nix-shell zsh --info-right | source /dev/stdin
+        functions -c precmd any_nix_shell_precmd && unfunction precmd
+        (( $+functions[theme_precmd] )) && add-zsh-hook precmd theme_precmd
+        add-zsh-hook precmd any_nix_shell_precmd
 
         # Add yarn globals to PATH
         export PATH="$PATH:`yarn global bin`"
@@ -134,7 +140,7 @@
           "terraform"
         ];
 
-        theme = "af-magic";
+        theme = "refined";
       };
     };
 
