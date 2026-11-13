@@ -44,38 +44,40 @@
     ssh = {
       enable = true;
 
-      serverAliveInterval = 60;
+      # Drop home-manager's legacy defaults (they match OpenSSH's own)
+      enableDefaultConfig = false;
 
-      # Required to use ancient keys for logging into Bindfit etc
-      extraConfig = ''
-      Host *
-        PubkeyAcceptedKeyTypes=+ssh-rsa
-        HostKeyAlgorithms=+ssh-rsa
-      '';
+      settings = {
+        "*" = {
+          ServerAliveInterval = 60;
 
-      matchBlocks = {
+          # Required to use ancient keys for logging into Bindfit etc
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          HostKeyAlgorithms = "+ssh-rsa";
+        };
+
         "datastudio" = {
-          hostname = "54.206.2.35";
-          user = "ubuntu";
-          identityFile = "~/development/keys/supramolecular-sites.pem";
+          HostName = "54.206.2.35";
+          User = "ubuntu";
+          IdentityFile = "~/development/keys/supramolecular-sites.pem";
         };
 
         "bindfit" = {
-          hostname = "52.63.104.201";
-          user = "webadmin";
-          identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
+          HostName = "52.63.104.201";
+          User = "webadmin";
+          IdentityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
         };
 
         "mezzanine" = {
-          hostname = "52.63.16.150";
-          user = "webadmin";
-          identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
+          HostName = "52.63.16.150";
+          User = "webadmin";
+          IdentityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
         };
 
         "rnaforge" = {
-          hostname = "3.106.227.85";
-          user = "ubuntu";
-          identityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
+          HostName = "3.106.227.85";
+          User = "ubuntu";
+          IdentityFile = "~/development/keys/sm-varvara-key-pair-sydney.pem";
         };
       };
     };
@@ -92,7 +94,7 @@
       };
 
       autocd = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
 
       enableCompletion = true;
 
@@ -100,7 +102,7 @@
         enable = true;
       };
 
-      initExtra = ''
+      initContent = ''
         # Initialise any-nix-shell
         any-nix-shell zsh --info-right | source /dev/stdin
 
@@ -143,6 +145,10 @@
       viAlias = true;
       vimAlias = true;
 
+      # No plugins need Ruby/Python providers
+      withRuby = false;
+      withPython3 = false;
+
       plugins = with pkgs.vimPlugins; [
         neovim-sensible
         bluloco-nvim
@@ -153,10 +159,8 @@
         vim-obsession  # Session saving (for resurrect)
         {
           plugin = nvim-colorizer-lua;
-          config = ''
-            packadd! nvim-colorizer.lua
-            lua require 'colorizer'.setup()
-          '';
+          type = "lua";
+          config = "require('colorizer').setup()";
         }
       ];
 
@@ -341,45 +345,6 @@
 
         run -b '~/.tmux/plugins/tpm/tpm'
       '';
-    };
-
-    vscode = {
-      enable = true;
-
-      package = pkgs.vscodium;
-
-      userSettings = {
-        "workbench.colorTheme" = "Monokai";
-        "files.autoSave" = "afterDelay";
-
-        # Fix capslock/esc swap behaviour
-        "keyboard.dispatch" = "keyCode";
-
-        # Set default terminal to home-manager zsh
-        "terminal.integrated.profiles.linux" =  {
-          "zsh" = {
-            "path" = "/home/varvara/.nix-profile/bin/zsh";
-          };
-        };
-
-        "terminal.integrated.defaultProfile.linux" = "zsh";
-
-        # Configure vscode-neovim executable and affinity
-        "vscode-neovim.neovimExecutablePaths.linux" = "/home/varvara/.nix-profile/bin/nvim";
-
-        "extensions.experimental.affinity" = {
-          "asvetliakov.vscode-neovim" = 1;
-        };
-      };
-
-      extensions = with pkgs.vscode-extensions; [
-        asvetliakov.vscode-neovim
-        yoavbls.pretty-ts-errors
-        bbenoist.nix
-        ms-python.python
-        ms-azuretools.vscode-docker
-        astro-build.astro-vscode
-      ];
     };
   };
 }
