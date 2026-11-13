@@ -20,6 +20,7 @@
     coldsnap  # AWS EBS volume CLI
     android-tools
     sigtop  # Utility to backup Signal Desktop messages
+    rclone
 
     # Direnv
     direnv
@@ -53,6 +54,12 @@
       '';
 
       matchBlocks = {
+        "datastudio" = {
+          hostname = "54.206.2.35";
+          user = "ubuntu";
+          identityFile = "~/development/keys/supramolecular-sites.pem";
+        };
+
         "bindfit" = {
           hostname = "52.63.104.201";
           user = "webadmin";
