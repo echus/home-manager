@@ -21,7 +21,14 @@
   outputs = { nixpkgs, home-manager, minimal-tmux-status, ... }:
     let
       system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+
+        # Only allow specific unfree packages
+        config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+          "rar"
+        ];
+      };
     in {
       homeConfigurations."varvara" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;

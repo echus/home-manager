@@ -15,12 +15,18 @@
     git
     gh
     tig
-    silver-searcher
+    silver-searcher-ng  # ag, PCRE2 fork
     awscli2
     coldsnap  # AWS EBS volume CLI
     android-tools
     sigtop  # Utility to backup Signal Desktop messages
     rclone
+    wget
+    imapsync
+    ffmpeg
+    ghostscript
+    rar  # Unfree, allowed in flake.nix
+    codex
 
     # Direnv
     direnv
@@ -31,6 +37,7 @@
     yarn-berry
     python3
     uv
+    jdk25  # Latest in nixpkgs (brew had 26)
   ];
 
   home.sessionVariables = {
